@@ -23,7 +23,7 @@ public:
             a->push_back(i);
     }
     void copyTo(History *a) {
-        this->copyTo(a->v);
+        this->copyTo(&a->v);
     }
     void copyFrom(const std::vector<Hist> *a) {
         this->clear();
@@ -31,7 +31,7 @@ public:
             this->v.push_back(i);
     }
     void copyFrom(const History *a) {
-        this->copyFrom(a->v);
+        this->copyFrom(&a->v);
     }
 };
 
@@ -43,7 +43,9 @@ public:
     struct Hist;
     struct Board;
 
-    Chess() {}
+    Chess() {
+        this->clear();
+    }
     ~Chess() {}
     bool checkMove(const Move move); // check if the move is valid
     bool move(const Move move); // do move
@@ -52,9 +54,9 @@ public:
         return this->current_player;
     }
     void clear();
-    void copyHistory(History<Hist> *h);
+    void copyHistory(History<Hist> *h); // copy history to h
+    void copyBoard(Board *b); // copy board to b
     void copyFrom(Chess *c); // the make itself a clone of `c'
-    void copyBoardTo(Board *b);
 };
 
 #endif

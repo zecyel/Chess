@@ -9,13 +9,19 @@
 
 class GoBangChess: public Chess {
 public:
-    static const int H = 15;
-    static const int W = 15; // standard size
-    static const int PLAYER_COUNT = 2;
+    const int PLAYER_COUNT = 2;
 
     struct Move {
         int x, y;
+        Move() {}
 		Move(int x_, int y_): x(x_), y(y_) {}
+        Move(char pos[2]) { // as the standard notation
+            x = y = -1;
+            if (pos[0] >= 49 && pos[0] <= 57) x = pos[0] - 49;
+            if (pos[0] >= 65 && pos[0] <= 70) x = pos[0] - 56;
+            if (pos[1] >= 49 && pos[1] <= 57) y = pos[1] - 49;
+            if (pos[1] >= 65 && pos[1] <= 70) y = pos[1] - 56;
+        }
         bool operator == (const Move &r) const {
             return x == r.x && y == r.y;
         }
@@ -23,23 +29,29 @@ public:
 
     struct Hist {
         int x, y, player;
+        Hist() {}
         Hist(int x_, int y_, int player_): x(x_), y(y_), player(player_) {}
     };
 
     struct Board {
+        static const int H = 15;
+        static const int W = 15; // standard size
         int content[H][W];
         const int NONE = -1;
-        const int MEMSIZE = sizeof(Board);
+        const int MEMSIZE = H * W * sizeof(int);
 
         int* operator [] (int rhs) const {
             return (int *) content[rhs];
+        }
+        void clear() {
+            std::memset(content, NONE, MEMSIZE);
         }
     };
 
 private:
     History<Hist> history;
 
-private:
+protected:
     Board board;
 
 public:
@@ -49,7 +61,7 @@ public:
     void clear() {
         this->current_player = 0;
         this->history.clear();
-        std::memset(this->board.content, this->board.NONE, this->board.MEMSIZE);
+        this->board.clear();
     }
 
     void copyHistory(History<Hist> *h) {
@@ -57,10 +69,14 @@ public:
         this->history.copyTo(h);
     }
 
+    void copyBoard(Board *b) {
+        memcpy(b->content, this->board.content, this->board.MEMSIZE);
+    }
+
     void copyFrom(GoBangChess *c) {
         this->current_player = c->currentPlayer();
         c->copyHistory(&this->history);
-        memcpy(this->board.content, c->board.content, this->board.MEMSIZE);
+        c->copyBoard(&this->board);
     }
 
     int winner() {
@@ -70,8 +86,8 @@ public:
                                              CHECK_DIRE((board), 3 * (dx), 3 * (dy)) == (target) && \
                                              CHECK_DIRE((board), 4 * (dx), 4 * (dy)) == (target))
         
-        const int xlim[4][2] = {{0, H}, {0, H - 4}, {0, H - 4}, {0, H - 4}};
-        const int ylim[4][2] = {{0, W - 4}, {0, W}, {0, W - 4}, {4, W}};
+        const int xlim[4][2] = {{0, Board::H}, {0, Board::H - 4}, {0, Board::H - 4}, {0, Board::H - 4}};
+        const int ylim[4][2] = {{0, Board::W - 4}, {0, Board::W}, {0, Board::W - 4}, {4, Board::W}};
         const int dire[4][2] = {{0, 1}, {1, 0}, {1, 1}, {1, -1}};
         for (int k = 0; k < 4; ++ k)
             for (int i = xlim[k][0]; i < xlim[k][1]; ++ i)
@@ -93,14 +109,12 @@ public:
     bool move(const Move move) {
         if (!this->checkMove(move))
             return false;
-        this->board[move.x][move.y] = this->current_player;
-        this->current_player = (this->current_player + 1) % this->PLAYER_COUNT;
+        this->board[move.x][move.y] = this->currentPlayer();
+        this->history.append(Hist(move.x, move.y, this->currentPlayer()));
+        this->current_player = (this->currentPlayer() + 1) % this->PLAYER_COUNT;
         return true;
     }
 
-    void copyBoardTo(Board *b) {
-        memcpy(b->content, this->board.content, this->board.MEMSIZE);
-    }
 };
 
 #endif
