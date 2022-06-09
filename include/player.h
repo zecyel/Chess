@@ -2,6 +2,7 @@
 #define PLAYER_H_
 
 #include "chess.h"
+#include "game.h"
 
 class _player {};
 

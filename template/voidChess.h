@@ -1,8 +1,8 @@
 #ifndef VOID_CHESS_H_
 #define VOID_CHESS_H_
 
-#include "chess.h"
-#include "cstring"
+#include <cstring>
+#include "include/chess.h"
 
 // to make code clear or simple is a dilemma
 #ifdef WANT_TO_HAVE_VOID_HISTORY

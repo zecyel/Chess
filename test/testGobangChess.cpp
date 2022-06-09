@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "goBangChess.h"
+#include "extension/chess/goBangChess.h"
 
 void paint(GoBangChess *a) { // should be done by interactor
     GoBangChess::Board b;

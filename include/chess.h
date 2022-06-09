@@ -2,7 +2,7 @@
 #define CHESS_H_
 
 #include <vector>
-
+#include <cstring>
 
 template <typename Hist>
 class History {
@@ -39,9 +39,13 @@ class Chess {
 protected:
     int current_player;
 public:
-    struct Move;
+    struct Move {
+        Move(std::string a) {}; // Move should have a constructor from string
+    };
     struct Hist;
-    struct Board;
+    struct Board {
+        static const int H, W;
+    };
 
     Chess() {
         this->clear();
@@ -53,7 +57,9 @@ public:
     int currentPlayer() { // who's now playing
         return this->current_player;
     }
-    void clear();
+    void clear() {
+        this->current_player = 0;
+    }
     void copyHistory(History<Hist> *h); // copy history to h
     void copyBoard(Board *b); // copy board to b
     void copyFrom(Chess *c); // the make itself a clone of `c'

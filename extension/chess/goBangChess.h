@@ -1,11 +1,12 @@
 #ifndef GOBANG_CHESS_H_
 #define GOBANG_CHESS_H_
 
+#include <iostream>
 #include <cstring>
 #include <vector>
 #include <algorithm>
 
-#include "chess.h"
+#include "include/chess.h"
 
 class GoBangChess: public Chess {
 public:
@@ -15,7 +16,7 @@ public:
         int x, y;
         Move() {}
 		Move(int x_, int y_): x(x_), y(y_) {}
-        Move(char pos[2]) { // as the standard notation
+        Move(const std::string pos) { // as the not-so standard notation
             x = y = -1;
             if (pos[0] >= 49 && pos[0] <= 57) x = pos[0] - 49;
             if (pos[0] >= 65 && pos[0] <= 70) x = pos[0] - 56;
