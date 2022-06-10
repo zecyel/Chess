@@ -1,5 +1,5 @@
-import extension.interactor.terminalInteractor as ti
-import extension.chess.gobangChess as gc
+import extension.interactor.terminal as ti
+import extension.chess.gobang as gc
 import bin.interactor as i
 a = gc.GobangChess()
 b = i.DisplayScheme()

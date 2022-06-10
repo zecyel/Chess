@@ -8,9 +8,6 @@ def standardParser(a: str) -> tuple:
 
 class TerminalInteractor(interactor.Interactor):
 
-    def __init__(self, ds_, chess_): # as 'Interactor' want it
-        super().__init__(ds_, chess_)
-
     def update(self) -> None:
         board_height = self.chess.getBoardSize()[0]
         board_width = self.chess.getBoardSize()[1]
@@ -22,6 +19,8 @@ class TerminalInteractor(interactor.Interactor):
             for j in range(board_width):
                 print(self.ds.image[self.chess.board.pos(i, j)], end = "")
             print()
+        if self.chess.winner() != 0:
+            print(self.ds.fetch("display.win", lambda x: str(x) + " is Winner")(self.chess.winner()))
     
     def getMove(self) -> tuple:
         a = input(self.ds.fetch("display.hint", "Please input your move: "))
