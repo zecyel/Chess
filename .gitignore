@@ -1,2 +1,2 @@
-*.exe
-*.o
+__pycache__/
+workspace.code-workspace
