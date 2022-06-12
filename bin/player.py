@@ -10,8 +10,9 @@ class Player:
         # Returning None means that the move should be get from the Interactor.
         pass
 
-    def moveNotify(self, move: tuple) -> None:
-         # no need to update ._chess
+    def moveNotify(self, rank: int, move: tuple) -> None:
+        # no need to update ._chess
+        # ._chess has already been updated
         pass
 
     def rank(self):

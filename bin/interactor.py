@@ -16,9 +16,9 @@ class DisplayScheme:
 
 class Interactor:
 
-    def __init__(self, ds_ : DisplayScheme, chess_ : Chess):
-        self.ds = ds_
-        self.chess = chess_
+    def __init__(self, ds: DisplayScheme, chess: Chess):
+        self.ds = ds
+        self.chess = chess
 
     def update(self) -> None:
         pass
