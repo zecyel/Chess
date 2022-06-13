@@ -4,28 +4,21 @@ from random import choice
 
 class MCTSChess(Chess):
     
-    def __init__(self, moveSuggestor: function = None, winnerEstimator: function = None):
-        self.__suggestor = moveSuggestor
-        self.__winnerEstimator = winnerEstimator
+    def __init__(self, moveSuggestor = None, winnerEstimator = None):
+        super().__init__()
+        if moveSuggestor:
+            self.moveSuggestor = moveSuggestor
+        if winnerEstimator:
+            self.winnerEstimator = winnerEstimator
 
     def possibleMoveSeq(self) -> list: # list of tuples
         pass
     
-    def _suggestMoveSeq(self) -> list: # list of tuples
+    def suggestMoveSeq(self) -> list: # list of tuples
         return self.possibleMoveSeq()
 
-    def suggestMoveSeq(self) -> list: # list of tuples
-        if self.__suggestor != None:
-            return self.__suggestor(self)
-        return self._suggestMoveSeq()
-
-    def _estimiateWinner(self) -> int:
+    def estimiateWinner(self) -> int:
         a = deepCopy(self)
         while a.winner() == 0:
             a.move(choice(a.possibleMoveSeq()))
         return a.winner()
-
-    def estimiateWinner(self) -> int:
-        if self.__winnerEstimator != None:
-            return self.__winnerEstimator(self)
-        return self._estimiateWinner()

@@ -1,4 +1,4 @@
-from mctsChess import MCTSChess
+from extension.player.mcts.mctsChess import MCTSChess
 from extension.chess.gobang import GobangChess
 
 class GobangChessForMCTS(MCTSChess, GobangChess):
